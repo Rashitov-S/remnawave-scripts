@@ -3194,7 +3194,13 @@ validate_caddyfile() {
 
     # Загружаем переменные из .env файла для валидации
     if [ -f "$APP_DIR/.env" ]; then
-        export $(grep -v '^#' "$APP_DIR/.env" | xargs)
+        # Читаем переменные аккуратно построчно, чтобы избежать проблем с пробелами/xargs
+        while IFS= read -r line || [ -n "$line" ]; do
+            # Пропускаем комментарии и пустые строки
+            [[ "$line" =~ ^#.*$ ]] && continue
+            [[ -z "$line" ]] && continue
+            export "$line"
+        done < "$APP_DIR/.env"
     fi
     
     # Проверяем, что обязательные переменные установлены
@@ -3210,9 +3216,13 @@ validate_caddyfile() {
         ssl_volume="-v $APP_DIR/ssl:/etc/caddy/ssl:ro"
     fi
 
-    # Use the SAME image as the runtime container (docker-compose), not a
-    # separate "-alpine" tag — otherwise we pull a second image just to validate,
-    # doubling Docker Hub pulls and making rate-limit failures more likely.
+    # Передаем CF_API_TOKEN внутрь docker run через флаг -e, если он существует
+    local cf_token_env=""
+    if [ -n "$CF_API_TOKEN" ]; then
+        cf_token_env="-e CF_API_TOKEN=$CF_API_TOKEN"
+    fi
+
+    # Use the SAME image as the runtime container (docker-compose)
     local validate_output
     if validate_output=$(docker run --rm \
         -v "$APP_DIR/Caddyfile:/etc/caddy/Caddyfile:ro" \
@@ -3221,21 +3231,21 @@ validate_caddyfile() {
         $ssl_volume \
         -e "SELF_STEAL_DOMAIN=$SELF_STEAL_DOMAIN" \
         -e "SELF_STEAL_PORT=$SELF_STEAL_PORT" \
+        $cf_token_env \
         caddybuilds/caddy-cloudflare:latest \
         caddy validate --config /etc/caddy/Caddyfile 2>&1); then
         echo -e "${GREEN}✅ Caddyfile is valid${NC}"
         return 0
     fi
 
-    # A failed `docker run` (Docker Hub rate limit, no network, missing image,
-    # daemon down) is NOT a Caddyfile error — don't mislabel it as invalid config.
+    # A failed `docker run` (Docker Hub rate limit, no network...)
     if echo "$validate_output" | grep -qiE 'pull rate limit|unauthenticated pull|toomanyrequests|error from registry|manifest unknown|manifest for .* not found|not found: manifest|no such host|connection refused|i/o timeout|timeout exceeded|cannot connect to the docker daemon|denied'; then
         echo -e "${YELLOW}⚠️  Could not validate: Docker failed to pull image caddy:${CADDY_VERSION}${NC}"
         echo -e "${GRAY}   This is NOT a Caddyfile syntax error.${NC}"
         echo -e "${GRAY}   Most likely a Docker Hub pull rate limit. Options:${NC}"
-        echo -e "${GRAY}     • docker login                # raises the pull limit${NC}"
-        echo -e "${GRAY}     • docker pull caddy:${CADDY_VERSION}   # warm the cache / retry${NC}"
-        echo -e "${GRAY}     • or wait for the limit to reset (~6h)${NC}"
+        echo -e "${GRAY}      • docker login                # raises the pull limit${NC}"
+        echo -e "${GRAY}      • docker pull caddy:${CADDY_VERSION}   # warm the cache / retry${NC}"
+        echo -e "${GRAY}      • or wait for the limit to reset (~6h)${NC}"
         return 2
     fi
 
