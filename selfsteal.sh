@@ -1934,7 +1934,7 @@ services:
     container_name: ${CONTAINER_NAME}
     restart: unless-stopped
 	environment:
-  	  - CF_API_TOKEN=\${CF_API_TOKEN}
+	  - CF_API_TOKEN=\${CF_API_TOKEN}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ${HTML_DIR}:/var/www/html
@@ -1972,7 +1972,7 @@ services:
     env_file:
       - .env
 	environment:
-      - CF_API_TOKEN=\${CF_API_TOKEN}
+	  - CF_API_TOKEN=\${CF_API_TOKEN}
     network_mode: "host"
     logging:
       driver: "json-file"
