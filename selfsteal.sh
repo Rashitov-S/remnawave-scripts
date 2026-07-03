@@ -1971,6 +1971,8 @@ services:
       - ${VOLUME_PREFIX}_config:/config
     env_file:
       - .env
+	environment:
+      - CF_API_TOKEN=\${CF_API_TOKEN}
     network_mode: "host"
     logging:
       driver: "json-file"
