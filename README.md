@@ -17,13 +17,13 @@
 
 ```bash
 # Remnawave Panel
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave.sh) @ install
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnawave.sh) @ install
 
 # RemnaNode
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnanode.sh) @ install
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnanode.sh) @ install
 
 # Caddy Selfsteal (Reality masking)
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 After installation, manage services with: `remnawave`, `remnanode`, or `selfsteal` commands.
@@ -52,10 +52,10 @@ Full installer and manager for [Remnawave Panel](https://github.com/remnawave/) 
 
 ```bash
 # Standard install
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave.sh) @ install
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnawave.sh) @ install
 
 # With options
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave.sh) @ install --name panel-prod --dev
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnawave.sh) @ install --name panel-prod --dev
 ```
 
 | Flag | Description |
@@ -110,7 +110,7 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave
 Install subscription-page on a **separate server** connecting to your main panel via API:
 
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave.sh) @ install-subpage-standalone --with-caddy
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnawave.sh) @ install-subpage-standalone --with-caddy
 ```
 
 The installer asks for panel URL, API token, and subscription domain, then generates a minimal docker-compose without DB dependencies.
@@ -206,7 +206,7 @@ remnawave restore --database-only --file database.sql.gz # Database only
 2. Transfer the backup file to the **target** server (e.g., via `scp`)
 3. On the **target** server, install and restore:
    ```bash
-   bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave.sh) @ install --name remnawave
+   bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnawave.sh) @ install --name remnawave
    remnawave restore --file backup.tar.gz
    ```
 
@@ -239,10 +239,10 @@ Installer and manager for **RemnaNode** proxy nodes with Xray-core integration. 
 
 ```bash
 # Interactive
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnanode.sh) @ install
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnanode.sh) @ install
 
 # Non-interactive (force mode)
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnanode.sh) @ install \
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/remnanode.sh) @ install \
     --force --secret-key="KEY" --port=3001 --xray
 ```
 
@@ -310,7 +310,7 @@ Deploy Caddy as a **Reality traffic masking** solution with professional website
 ### Installation
 
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 ### Commands
@@ -429,10 +429,10 @@ Professional tool for managing **Cloudflare WARP** and **Tor** on Linux servers.
 
 ```bash
 # Install as global command
-sudo bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/wtm.sh) @ install-script
+sudo bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/wtm.sh) @ install-script
 
 # Or run directly
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/wtm.sh)
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/wtm.sh)
 
 # Install both WARP and Tor
 sudo wtm install-all
@@ -448,13 +448,13 @@ Quick installer for [NetBird](https://netbird.io/) mesh VPN. Supports CLI, cloud
 
 ```bash
 # CLI installation
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/netbird.sh) install --key YOUR-SETUP-KEY
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/netbird.sh) install --key YOUR-SETUP-KEY
 
 # Auto-install for cloud-init / provisioning
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/netbird.sh) init --key YOUR-SETUP-KEY
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/netbird.sh) init --key YOUR-SETUP-KEY
 
 # Interactive menu
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/netbird.sh) menu
+bash <(curl -Ls https://github.com/Rashitov-S/remnawave-scripts/raw/main/netbird.sh) menu
 ```
 
 Key features: one-liner install, SSH access between peers (`--ssh`), auto-firewall setup (UFW/firewalld), Ansible-friendly mode.
