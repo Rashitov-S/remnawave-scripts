@@ -1829,6 +1829,21 @@ create_caddy_config() {
         use_manual_ssl=true
         ssl_source="Manual (wildcard certificate)"
     fi
+
+	local cf_token_line=""
+    if [ "$use_manual_ssl" != true ]; then
+        echo
+        echo -e "${WHITE}☁️ Настройка Cloudflare DNS Challenge${NC}"
+        echo -e "${GRAY}$(printf '─%.0s' $(seq 1 40))${NC}"
+        echo -n "Введите ваш Cloudflare API Token: "
+        read -r input_token
+        # Очищаем от случайных пробелов и переносов строк
+        input_token=$(echo "$input_token" | tr -d '\r\n ')
+        
+        # Экспортируем в текущую сессию скрипта, чтобы validate_caddyfile() его сразу увидела в памяти
+        export CF_API_TOKEN="$input_token"
+        cf_token_line="CF_API_TOKEN=$input_token"
+    fi
     
     # Create .env file
     cat > "$APP_DIR/.env" << EOF
@@ -1908,9 +1923,6 @@ EOF
 
     # Create docker-compose.yml with or without SSL volume
     if [ "$use_manual_ssl" = true ]; then
-		echo -n "Введите ваш Cloudflare API Token: "
-		read -r input_token
-		echo "CF_API_TOKEN=$input_token" > "$APP_DIR/.env"
         cat > "$APP_DIR/docker-compose.yml" << EOF
 services:
   caddy:
@@ -1918,7 +1930,7 @@ services:
     container_name: ${CONTAINER_NAME}
     restart: unless-stopped
 	environment:
-  	  - CF_API_TOKEN=${CF_API_TOKEN}
+  	  - CF_API_TOKEN=\${CF_API_TOKEN}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ${HTML_DIR}:/var/www/html
