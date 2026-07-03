@@ -3172,7 +3172,7 @@ validate_caddyfile() {
 
     # Make the image available locally (with mirror fallback) so the validation
     # `docker run` below reuses it instead of pulling from Docker Hub.
-    ensure_image "caddy:${CADDY_VERSION}" || true
+    ensure_image "caddybuilds/caddy-cloudflare:latest" || true
 
     # Загружаем переменные из .env файла для валидации
     if [ -f "$APP_DIR/.env" ]; then
