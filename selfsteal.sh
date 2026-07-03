@@ -1933,8 +1933,6 @@ services:
     image: caddybuilds/caddy-cloudflare:latest
     container_name: ${CONTAINER_NAME}
     restart: unless-stopped
-	environment:
-	  - CF_API_TOKEN=\${CF_API_TOKEN}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ${HTML_DIR}:/var/www/html
@@ -1971,8 +1969,6 @@ services:
       - ${VOLUME_PREFIX}_config:/config
     env_file:
       - .env
-	environment:
-	  - CF_API_TOKEN=\${CF_API_TOKEN}
     network_mode: "host"
     logging:
       driver: "json-file"
