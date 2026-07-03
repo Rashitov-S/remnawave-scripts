@@ -264,7 +264,7 @@ ensure_runtime_image() {
     if [ "$WEB_SERVER" = "nginx" ]; then
         ensure_image "nginx:${NGINX_VERSION}"
     else
-        ensure_image "caddy:${CADDY_VERSION}"
+        ensure_image "caddybuilds/caddy-cloudflare:latest"
     fi
 }
 
@@ -4444,8 +4444,8 @@ reissue_caddy_cert() {
     printf "   ${WHITE}%-13s${NC} ${GRAY}%s${NC}\n" "Domain:" "$domain"
 
     # The Caddy image is needed for the wipe + verify helper containers.
-    if ! ensure_image "caddy:${CADDY_VERSION}"; then
-        log_error "Caddy image caddy:${CADDY_VERSION} is not available; cannot continue."
+    if ! ensure_image "caddybuilds/caddy-cloudflare:latest"; then
+        log_error "Caddy image caddybuilds/caddy-cloudflare:latest is not available; cannot continue."
         return 1
     fi
 
