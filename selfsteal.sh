@@ -1852,12 +1852,16 @@ create_caddy_config() {
 # Domain Configuration
 SELF_STEAL_DOMAIN=$domain
 SELF_STEAL_PORT=$port
+$cf_token_line
 
 # Generated on $(date)
 # Server IP: $NODE_IP
 # SSL: $ssl_source
 EOF
 
+    if [ -n "$input_token" ]; then
+        export CF_API_TOKEN="$input_token"
+    fi
     log_success ".env file created"
     
     # Handle manual SSL certificates
