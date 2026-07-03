@@ -3203,7 +3203,7 @@ validate_caddyfile() {
         $ssl_volume \
         -e "SELF_STEAL_DOMAIN=$SELF_STEAL_DOMAIN" \
         -e "SELF_STEAL_PORT=$SELF_STEAL_PORT" \
-        caddy:${CADDY_VERSION} \
+        caddybuilds/caddy-cloudflare:latest \
         caddy validate --config /etc/caddy/Caddyfile 2>&1); then
         echo -e "${GREEN}✅ Caddyfile is valid${NC}"
         return 0
