@@ -1944,7 +1944,7 @@ EOF
         cat > "$APP_DIR/docker-compose.yml" << EOF
 services:
   caddy:
-    image: caddy:${CADDY_VERSION}
+    image: caddybuilds/caddy-cloudflare:latest
     container_name: ${CONTAINER_NAME}
     restart: unless-stopped
     volumes:
