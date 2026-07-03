@@ -1908,12 +1908,17 @@ EOF
 
     # Create docker-compose.yml with or without SSL volume
     if [ "$use_manual_ssl" = true ]; then
+		echo -n "Введите ваш Cloudflare API Token: "
+		read -r input_token
+		echo "CF_API_TOKEN=$input_token" > "$APP_DIR/.env"
         cat > "$APP_DIR/docker-compose.yml" << EOF
 services:
   caddy:
-    image: caddy:${CADDY_VERSION}
+    image: caddybuilds/caddy-cloudflare:latest
     container_name: ${CONTAINER_NAME}
     restart: unless-stopped
+	environment:
+  	  - CF_API_TOKEN=${CF_API_TOKEN}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ${HTML_DIR}:/var/www/html
@@ -2099,6 +2104,9 @@ https://{$SELF_STEAL_DOMAIN} {
 		X-Content-Type-Options "nosniff"
 		X-Frame-Options "SAMEORIGIN"
 		X-XSS-Protection "1; mode=block"
+	}
+	tls {
+		dns cloudflare {$CF_API_TOKEN}
 	}
 	root * /var/www/html
 	try_files {path} /index.html
